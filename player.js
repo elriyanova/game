@@ -3,23 +3,36 @@ let x = size / 2
 let y = size / 2
 
 function move(direction, step){    
+    if(typeof step !== "number"){
+        throw new Error("Wrong step value")
+    }
     for (let i = 0; i < step; i++){
         if(direction === 'right'){
-            (x < size) ? (x = x + 1) : x = 0
+            x = coordCalc(x, 1)
         }
         else if(direction === 'left'){
-            (x > 0) ? (x = x - 1) : x = 100
+            x = coordCalc(x, -1)
         }
         else if(direction === 'up'){
-            (y < size) ? (y = y + 1) : y = 0
+            y = coordCalc(y, 1)
         }
-        else if(direction === 'down' && y > 0){
-            (y > 0) ? (y = y - 1) : y = 100
+        else if(direction === 'down'){
+            y = coordCalc(y, -1)
         }
-        else return 'Wrong direction'
+        else throw new Error("Wrong direction value")
 
         console.log(`${i}: Move to: ${direction}, x = ${x}, y = ${y}`)
     }
 }
 
-move("down", 60)
+function coordCalc(currentCoord, step){
+    let result = currentCoord + step
+    if (step > 0){
+        return result < size ? result : 0
+    }
+    if (step < 0){
+        return result > 0 ? result : size
+    }
+}
+
+move("right", 5)
