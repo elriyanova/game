@@ -5,21 +5,21 @@ let y = size / 2
 function move(direction, step){    
     for (let i = 0; i < step; i++){
         if(direction === 'right'){
-            x = x + 1
+            (x < size) ? (x = x + 1) : x = 0
         }
         else if(direction === 'left'){
-            x = x - 1
+            (x > 0) ? (x = x - 1) : x = 100
         }
         else if(direction === 'up'){
-            y = y + 1
+            (y < size) ? (y = y + 1) : y = 0
         }
-        else if(direction === 'down'){
-            y = y - 1
+        else if(direction === 'down' && y > 0){
+            (y > 0) ? (y = y - 1) : y = 100
         }
         else return 'Wrong direction'
 
-        console.log(`Move to: ${direction}, x = ${x}, y = ${y}`)
+        console.log(`${i}: Move to: ${direction}, x = ${x}, y = ${y}`)
     }
 }
 
-move("up", 101)
+move("down", 60)
