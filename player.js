@@ -1,25 +1,41 @@
-const size = 100
-let x = size / 2 
-let y = size / 2
-
-function move(direction, step){    
-    for (let i = 0; i < step; i++){
-        if(direction === 'right'){
-            (x < size) ? (x = x + 1) : x = 0
+let map = {
+    size: 100,
+    coordCalc(currentCoord, step){
+        let result = currentCoord + step
+        if (step > 0){
+            return result < this.size ? result : 0
         }
-        else if(direction === 'left'){
-            (x > 0) ? (x = x - 1) : x = 100
+        if (step < 0){
+            return result > 0 ? result : this.size
         }
-        else if(direction === 'up'){
-            (y < size) ? (y = y + 1) : y = 0
-        }
-        else if(direction === 'down' && y > 0){
-            (y > 0) ? (y = y - 1) : y = 100
-        }
-        else return 'Wrong direction'
-
-        console.log(`${i}: Move to: ${direction}, x = ${x}, y = ${y}`)
     }
 }
 
-move("down", 60)
+let player = {
+    x: map.size / 2,
+    y: map.size / 2,
+    move(direction, step){    
+        if(typeof step !== "number"){
+            throw new Error("Wrong step value")
+        }
+        for (let i = 0; i < step; i++){
+            if(direction === 'right'){
+                this.x = map.coordCalc(this.x, 1)
+            }
+            else if(direction === 'left'){
+                this.x = map.coordCalc(this.x, -1)
+            }
+            else if(direction === 'up'){
+                this.y = map.coordCalc(this.y, 1)
+            }
+            else if(direction === 'down'){
+                this.y = map.coordCalc(this.y, -1)
+            }
+            else throw new Error("Wrong direction value")
+    
+            console.log(`${i}: Move to: ${direction}, x = ${this.x}, y = ${this.y}`)
+        }
+    }
+}
+
+player.move("right", 105)
