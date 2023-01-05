@@ -1,6 +1,6 @@
-let map = {
-    size: 100,
-    coordCalc(currentCoord, step){
+function Map(){
+    this.size = 100,
+    this.coordCalc = function(currentCoord, step){
         let result = currentCoord + step
         if (step > 0){
             return result < this.size ? result : 0
@@ -11,10 +11,10 @@ let map = {
     }
 }
 
-let player = {
-    x: map.size / 2,
-    y: map.size / 2,
-    move(direction, step){    
+function Player(){
+    this.x = map.size / 2,
+    this.y = map.size / 2,
+    this.move = function(direction, step){    
         if(typeof step !== "number"){
             throw new Error("Wrong step value")
         }
@@ -38,4 +38,9 @@ let player = {
     }
 }
 
-player.move("right", 105)
+let map = new Map()
+let player = new Player()
+
+player.move("down", 105)
+
+setInterval(() => console.log('interval'), 1000)
