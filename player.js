@@ -11,7 +11,8 @@ function Map(){
     }
 }
 
-function Player(){
+function Player(name){
+    this.name = name
     this.x = map.size / 2,
     this.y = map.size / 2,
     this.move = function(direction, step){    
@@ -33,14 +34,14 @@ function Player(){
             }
             else throw new Error("Wrong direction value")
     
-            console.log(`${i}: Move to: ${direction}, x = ${this.x}, y = ${this.y}`)
+            console.log(`${this.name}: Move to: ${direction}, x = ${this.x}, y = ${this.y}`)
         }
     }
 }
 
 let map = new Map()
-let player = new Player()
+let player = new Player("Player1")
+let player2 = new Player("Player2")
 
-player.move("down", 105)
-
-setInterval(() => console.log('interval'), 1000)
+player.move("right", 5)
+setInterval(() => player2.move("down", 2), 2000)
