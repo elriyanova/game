@@ -11,7 +11,7 @@ function Map(){
     }
 }
 
-function Player(name){
+function Player(name, map){
     this.name = name
     this.x = map.size / 2,
     this.y = map.size / 2,
@@ -39,9 +39,15 @@ function Player(name){
     }
 }
 
-let map = new Map()
-let player = new Player("Player1")
-let player2 = new Player("Player2")
+function Game(){
+    let map = new Map()
+    let player = new Player("Player1", map)
+    let player2 = new Player("Player2", map)
+    this.run = function(){
+        player.move("right", 5)
+        setInterval(() => player2.move("down", 2), 2000)
+    }
+}
 
-player.move("right", 5)
-setInterval(() => player2.move("down", 2), 2000)
+let game = new Game()
+game.run()
