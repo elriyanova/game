@@ -40,13 +40,30 @@ function Player(name, map){
 }
 
 function Game(){
-    let players = []
     let map = new Map()
-    players[0] = new Player("Player1", map)
-    players[1] = new Player("Player2", map)
+    let players = []
+    let directions = []
+    let directionsSet = ['down',"right", "left", "up"]
+    this.addPlayer = function(direction){
+        players.push(new Player(`Player ${players.length}`, map))
+        directions.push(direction)
+    }
+    this.init = function(playersCount){
+        for(let i = 0; i < playersCount; i++){
+            this.addPlayer(this.getDirection())
+        }
+    }
     this.run = function(){
-        players[0].move("right", 5)
-        setInterval(() => players[1].move("down", 2), 2000)
+        setInterval(() => 
+        {
+            for (let i = 0; i < players.length; i++){
+                players[i].move(directions[i],1)
+            }
+        }, 2000)
+    }
+    this.getDirection = function(){
+        let index = Math.floor(Math.random() * 4);
+        return directionsSet[index]
     }
 }
 
@@ -62,6 +79,8 @@ function Game(){
 
 function debugStart(){
     let game = new Game()
+
+    game.init(10)
     game.run()
 }
 
