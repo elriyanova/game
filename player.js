@@ -40,14 +40,29 @@ function Player(name, map){
 }
 
 function Game(){
+    let players = []
     let map = new Map()
-    let player = new Player("Player1", map)
-    let player2 = new Player("Player2", map)
+    players[0] = new Player("Player1", map)
+    players[1] = new Player("Player2", map)
     this.run = function(){
-        player.move("right", 5)
-        setInterval(() => player2.move("down", 2), 2000)
+        players[0].move("right", 5)
+        setInterval(() => players[1].move("down", 2), 2000)
     }
 }
 
-let game = new Game()
-game.run()
+// function start(){
+//     const c = document.getElementById("myCanvas");
+//     const ctx = c.getContext("2d");
+//     ctx.beginPath();
+//     ctx.rect(50, 50, 1, 1);
+//     ctx.stroke();
+// }
+
+// window.onload = start
+
+function debugStart(){
+    let game = new Game()
+    game.run()
+}
+
+debugStart()
