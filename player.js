@@ -56,9 +56,12 @@ function Game(){
     this.run = function(){
         setInterval(() => 
         {
-            for (let i = 0; i < players.length; i++){
-                players[i].move(directions[i],1)
-            }
+            players.forEach((item, index) => {
+                item.move(directions[index],1)
+            })
+            // for (let i = 0; i < players.length; i++){
+            //     players[i].move(directions[i],1)
+            // }
         }, 2000)
     }
     this.getDirection = function(){
@@ -67,21 +70,23 @@ function Game(){
     }
 }
 
-// function start(){
-//     const c = document.getElementById("myCanvas");
-//     const ctx = c.getContext("2d");
-//     ctx.beginPath();
-//     ctx.rect(50, 50, 1, 1);
-//     ctx.stroke();
-// }
+// // function start(){
+// //     const c = document.getElementById("myCanvas");
+// //     const ctx = c.getContext("2d");
+// //     ctx.beginPath();
+// //     ctx.rect(50, 50, 1, 1);
+// //     ctx.stroke();
+// // }
 
-// window.onload = start
+// // window.onload = start
 
 function debugStart(){
     let game = new Game()
 
-    game.init(10)
+    game.init(2)
     game.run()
 }
 
 debugStart()
+
+
