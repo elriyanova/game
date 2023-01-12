@@ -15,8 +15,11 @@ class Player{
     constructor(name,map){
         this.name = name
         this.map = map
-        this.x = map.size / 2
-        this.y = map.size / 2
+        this.x = this.getCoord()
+        this.y = this.getCoord()
+    }
+    getCoord(){
+        return Math.floor(Math.random() * this.map.size) 
     }
     move(direction, step){    
         if(typeof step !== "number"){
@@ -43,6 +46,13 @@ class Player{
 }
 
 class Game{
+    constructor(playersCount){
+        for(let i = 0; i < playersCount; i++){
+            this.addPlayer(this.getDirection())
+        }
+        this.c = document.getElementById("myCanvas")
+        this.ctx = this.c.getContext("2d")
+    }
     map = new Map()
     players = []
     directions = []
@@ -51,42 +61,45 @@ class Game{
         this.players.push(new Player(`Player ${this.players.length}`, this.map))
         this.directions.push(direction)
     }
-    init(playersCount){
-        for(let i = 0; i < playersCount; i++){
-            this.addPlayer(this.getDirection())
-        }
-    }
     run(){
-        setInterval(() => 
-        {
-            this.players.forEach((item, index) => {
-                item.move(this.directions[index],1)
-            })
-        }, 2000)
+        this.players.forEach((item, index) => {
+            item.move(this.directions[index], this.getSpeed())
+        })
     }
     getDirection(){
-        let index = Math.floor(Math.random() * 4);
+        let index = Math.floor(Math.random() * 4)
         return this.directionsSet[index]
+    }
+    getSpeed(){
+        return Math.floor(Math.random() * 4) 
+    }
+    render(){
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+        this.players.forEach((item) => {
+            this.ctx.beginPath()
+            this.ctx.rect(item.x, item.y, 1, 1)
+            this.ctx.stroke()
+        })
     }
 }
 
-// // function start(){
-// //     const c = document.getElementById("myCanvas");
-// //     const ctx = c.getContext("2d");
-// //     ctx.beginPath();
-// //     ctx.rect(50, 50, 1, 1);
-// //     ctx.stroke();
-// // }
-
-// // window.onload = start
-
-function debugStart(){
-    let game = new Game()
-
-    game.init(2)
-    game.run()
+function start(){
+    let game = new Game(15)
+    setInterval(function(){
+        game.run()
+        game.render()
+    }, 100)
 }
 
-debugStart()
+window.onload = start
+
+// function debugStart(){
+//     let game = new Game()
+
+//     game.init(2)
+//     game.run()
+// }
+
+// debugStart()
 
 
