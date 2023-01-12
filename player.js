@@ -1,6 +1,6 @@
-function Map(){
-    this.size = 100,
-    this.coordCalc = function(currentCoord, step){
+class Map{
+    size = 100
+    coordCalc(currentCoord, step){
         let result = currentCoord + step
         if (step > 0){
             return result < this.size ? result : 0
@@ -11,26 +11,29 @@ function Map(){
     }
 }
 
-function Player(name, map){
-    this.name = name
-    this.x = map.size / 2,
-    this.y = map.size / 2,
-    this.move = function(direction, step){    
+class Player{
+    constructor(name,map){
+        this.name = name
+        this.map = map
+        this.x = map.size / 2
+        this.y = map.size / 2
+    }
+    move(direction, step){    
         if(typeof step !== "number"){
             throw new Error("Wrong step value")
         }
         for (let i = 0; i < step; i++){
             if(direction === 'right'){
-                this.x = map.coordCalc(this.x, 1)
+                this.x = this.map.coordCalc(this.x, 1)
             }
             else if(direction === 'left'){
-                this.x = map.coordCalc(this.x, -1)
+                this.x = this.map.coordCalc(this.x, -1)
             }
             else if(direction === 'up'){
-                this.y = map.coordCalc(this.y, 1)
+                this.y = this.map.coordCalc(this.y, 1)
             }
             else if(direction === 'down'){
-                this.y = map.coordCalc(this.y, -1)
+                this.y = this.map.coordCalc(this.y, -1)
             }
             else throw new Error("Wrong direction value")
     
@@ -39,34 +42,31 @@ function Player(name, map){
     }
 }
 
-function Game(){
-    let map = new Map()
-    let players = []
-    let directions = []
-    let directionsSet = ['down',"right", "left", "up"]
-    this.addPlayer = function(direction){
-        players.push(new Player(`Player ${players.length}`, map))
-        directions.push(direction)
+class Game{
+    map = new Map()
+    players = []
+    directions = []
+    directionsSet = ['down',"right", "left", "up"]
+    addPlayer(direction){
+        this.players.push(new Player(`Player ${this.players.length}`, this.map))
+        this.directions.push(direction)
     }
-    this.init = function(playersCount){
+    init(playersCount){
         for(let i = 0; i < playersCount; i++){
             this.addPlayer(this.getDirection())
         }
     }
-    this.run = function(){
+    run(){
         setInterval(() => 
         {
-            players.forEach((item, index) => {
-                item.move(directions[index],1)
+            this.players.forEach((item, index) => {
+                item.move(this.directions[index],1)
             })
-            // for (let i = 0; i < players.length; i++){
-            //     players[i].move(directions[i],1)
-            // }
         }, 2000)
     }
-    this.getDirection = function(){
+    getDirection(){
         let index = Math.floor(Math.random() * 4);
-        return directionsSet[index]
+        return this.directionsSet[index]
     }
 }
 
