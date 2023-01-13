@@ -12,14 +12,25 @@ class Map{
 }
 
 class Player{
+    colours = ['lightBlue', 'grey', 'red', 'pink']
     constructor(name,map){
         this.name = name
         this.map = map
         this.x = this.getCoord()
         this.y = this.getCoord()
+        this.width = this.getSize()
+        this.height = this.getSize()
+        this.colour = this.getColours()
     }
     getCoord(){
         return Math.floor(Math.random() * this.map.size) 
+    }
+    getSize(){
+        return Math.floor(Math.random() * 5) + 3
+    }
+    getColours(){
+        let index = Math.floor(Math.random() * 4)
+        return this.colours[index]
     }
     move(direction, step){    
         if(typeof step !== "number"){
@@ -74,11 +85,11 @@ class Game{
         return Math.floor(Math.random() * 4) 
     }
     render(){
-        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height)
         this.players.forEach((item) => {
             this.ctx.beginPath()
-            this.ctx.rect(item.x, item.y, 1, 1)
-            this.ctx.stroke()
+            this.ctx.fillStyle = item.colour
+            this.ctx.fillRect(item.x, item.y, item.width, item.height)
         })
     }
 }
