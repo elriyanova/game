@@ -11,22 +11,37 @@ class Map{
     }
 }
 
-class Player{
-    colours = ['lightBlue', 'grey', 'red', 'pink']
-    constructor(name,map){
+class AbstractItem{
+    constructor(name, map){
         this.name = name
         this.map = map
         this.x = this.getCoord()
         this.y = this.getCoord()
         this.width = this.getSize()
         this.height = this.getSize()
-        this.colour = this.getColours()
     }
     getCoord(){
         return Math.floor(Math.random() * this.map.size) 
     }
     getSize(){
         return Math.floor(Math.random() * 5) + 3
+    }
+}
+
+class Player extends AbstractItem{
+    constructor(name, map, colour, x, y){
+        super(name, map)
+        this.colour = colour
+        this.x = x
+        this.y = y
+    }
+}
+
+class Enemy extends AbstractItem{
+    colours = ['lightBlue', 'grey', 'red', 'pink']
+    constructor(name, map){
+        super(name, map)
+        this.colour = this.getColours()
     }
     getColours(){
         let index = Math.floor(Math.random() * 4)
@@ -57,23 +72,24 @@ class Player{
 }
 
 class Game{
-    constructor(playersCount){
-        for(let i = 0; i < playersCount; i++){
-            this.addPlayer(this.getDirection())
+    constructor(enemiesCount){
+        for(let i = 0; i < enemiesCount; i++){
+            this.addEnemy(this.getDirection())
         }
         this.c = document.getElementById("myCanvas")
         this.ctx = this.c.getContext("2d")
     }
     map = new Map()
-    players = []
+    player = new Player('Player', this.map, 'black', '50', '50')
+    enemies = []
     directions = []
     directionsSet = ['down',"right", "left", "up"]
-    addPlayer(direction){
-        this.players.push(new Player(`Player ${this.players.length}`, this.map))
+    addEnemy(direction){
+        this.enemies.push(new Enemy(`Enemy ${this.enemies.length}`, this.map))
         this.directions.push(direction)
     }
     run(){
-        this.players.forEach((item, index) => {
+        this.enemies.forEach((item, index) => {
             item.move(this.directions[index], this.getSpeed())
         })
     }
@@ -84,13 +100,17 @@ class Game{
     getSpeed(){
         return Math.floor(Math.random() * 4) 
     }
+    renderItem(item){
+        this.ctx.beginPath()
+        this.ctx.fillStyle = item.colour
+        this.ctx.fillRect(item.x, item.y, item.width, item.height)
+    }
     render(){
         this.ctx.clearRect(0, 0, this.c.width, this.c.height)
-        this.players.forEach((item) => {
-            this.ctx.beginPath()
-            this.ctx.fillStyle = item.colour
-            this.ctx.fillRect(item.x, item.y, item.width, item.height)
+        this.enemies.forEach((item) => {
+            this.renderItem(item)
         })
+        this.renderItem(this.player)
     }
 }
 
@@ -112,5 +132,4 @@ window.onload = start
 // }
 
 // debugStart()
-
 
