@@ -29,11 +29,13 @@ class AbstractItem{
 }
 
 class Player extends AbstractItem{
-    constructor(name, map, colour, x, y){
+    constructor(name, map, colour, x, y, width, height){
         super(name, map)
         this.colour = colour
         this.x = x
         this.y = y
+        this.width = width
+        this.height = height
     }
 }
 
@@ -80,7 +82,7 @@ class Game{
         this.ctx = this.c.getContext("2d")
     }
     map = new Map()
-    player = new Player('Player', this.map, 'black', '50', '50')
+    player = new Player('Player', this.map, 'black', 50, 50, 5, 5)
     enemies = []
     directions = []
     directionsSet = ['down',"right", "left", "up"]
@@ -88,9 +90,20 @@ class Game{
         this.enemies.push(new Enemy(`Enemy ${this.enemies.length}`, this.map))
         this.directions.push(direction)
     }
+    checkCollision(obj1, obj2){
+        if(
+            obj1.x < obj2.x + obj2.width &&
+            obj1.x + obj1.width > obj2.x &&
+            obj1.y < obj2.y + obj2.height &&
+            obj1.height + obj1.y > obj2.y
+        ){
+            console.log('Collision detected!')
+        }
+    }
     run(){
         this.enemies.forEach((item, index) => {
             item.move(this.directions[index], this.getSpeed())
+            this.checkCollision(this.player, item)
         })
     }
     getDirection(){
